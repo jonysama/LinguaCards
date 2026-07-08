@@ -1,0 +1,18 @@
+{% extends 'flashcards/base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm mt-4">
+            <div class="card-body">
+                <h3 class="card-title mb-4">Add new card to: <span class="text-primary">{{ deck.title }}</span></h3>
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-success mt-3">Save Card</button>
+                    <a href="{% url 'home' %}" class="btn btn-secondary mt-3 ms-2">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

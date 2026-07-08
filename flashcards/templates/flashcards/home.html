@@ -1,0 +1,40 @@
+{% extends 'flashcards/base.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Available Flashcard Decks</h2>
+    <!-- Кнопка-ссылка (event handler) -->
+    <a href="{% url 'create-deck' %}" class="btn btn-primary">Add New Deck</a>
+</div>
+
+<div class="row">
+    <!-- Цикл for для вывода данных -->
+    {% for deck in decks %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">{{ deck.title }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Language: {{ deck.language.name }}</h6>
+                    <p class="card-text">{{ deck.description }}</p>
+                </div>
+                <div class="card-footer bg-white border-top-0 d-flex justify-content-between align-items-center">
+                    <small class="text-muted">Author: {{ deck.author.username }}</small>
+                    <div>
+                        <!-- Кнопка просмотра карточек (доступна всем) -->
+                        <a href="{% url 'view-deck' deck.id %}" class="btn btn-sm btn-primary">View Cards</a>
+                        
+                        <!-- Кнопка добавления (только для автора) -->
+                        {% if request.user == deck.author %}
+                            <a href="{% url 'add-card' deck.id %}" class="btn btn-sm btn-outline-success ms-1">+</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info">No decks available yet. Be the first to create one!</div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

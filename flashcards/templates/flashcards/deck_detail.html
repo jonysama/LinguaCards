@@ -1,0 +1,38 @@
+{% extends 'flashcards/base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>{{ deck.title }} <span class="badge bg-secondary">{{ deck.language.name }}</span></h2>
+    <div>
+        {% if request.user == deck.author %}
+            <a href="{% url 'add-card' deck.id %}" class="btn btn-success">+ Add Card</a>
+        {% endif %}
+        <a href="{% url 'home' %}" class="btn btn-outline-primary ms-2">Back to Decks</a>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Выводим все карточки через цикл -->
+    {% for card in cards %}
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm h-100 border-primary">
+                <div class="card-body text-center">
+                    <!-- Оригинальное слово -->
+                    <h3 class="card-title text-primary mb-3">{{ card.original_word }}</h3>
+                    <hr>
+                    <!-- Перевод -->
+                    <h4 class="card-text text-success mt-3">{{ card.translation }}</h4>
+                    
+                    <!-- Если есть пример предложения, показываем его -->
+                    {% if card.example_sentence %}
+                        <p class="text-muted mt-3 font-italic">"{{ card.example_sentence }}"</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <div class="col-12">
+            <div class="alert alert-warning">This deck has no cards yet.</div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

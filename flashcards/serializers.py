@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import Language, Deck, Card
 
-# === Выполняем требование: >=2 ModelSerializer ===
+# требование ModelSerializer 
 
 class LanguageSerializer(serializers.ModelSerializer):
     class Meta:

@@ -10,7 +10,7 @@ from .serializers import (
     LanguageSerializer, DeckSerializer, ContactFormSerializer
 )
 
-# === Выполняем требование: >=2 FBV (Функции) ===
+# требование FBV (Функции)
 
 @api_view(['GET', 'POST'])
 @permission_classes([AllowAny])
@@ -36,7 +36,7 @@ def submit_contact_form(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# === Выполняем требование: >=2 CBV (Классы) + Полный CRUD + request.user ===
+# требование CBV (Классы) + Полный CRUD + request.user
 
 class DeckListCreateAPIView(APIView):
     # Требуем, чтобы пользователь был залогинен

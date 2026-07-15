@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from .models import Deck, Card
 
-# 1. Форма регистрации
+
 class UserRegistrationForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
     password_confirm = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}), label="Confirm Password")
@@ -23,12 +23,12 @@ class UserRegistrationForm(forms.ModelForm):
             self.add_error('password_confirm', "Passwords do not match")
         return cleaned_data
 
-# 2. Форма логина
+
 class UserLoginForm(forms.Form):
     username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
 
-# 3. Форма создания колоды (ModelForm)
+
 class DeckForm(forms.ModelForm):
     class Meta:
         model = Deck
@@ -39,7 +39,7 @@ class DeckForm(forms.ModelForm):
             'language': forms.Select(attrs={'class': 'form-select'}),
         }
 
-# 4. Форма создания карточки (ModelForm)
+
 class CardForm(forms.ModelForm):
     class Meta:
         model = Card

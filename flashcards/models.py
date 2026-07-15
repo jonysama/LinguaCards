@@ -1,14 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-# 1. Модель языка (например: Английский, Турецкий, Японский)
+# 1. Модель (например: Английский, Турецкий, Японский)
 class Language(models.Model):
     name = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
         return self.name
 
-# 2. Модель колоды слов (группирует карточки)
+# 2. Модель колоды слов 
 class Deck(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True)

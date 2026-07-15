@@ -10,7 +10,6 @@ from .serializers import (
     LanguageSerializer, DeckSerializer, ContactFormSerializer
 )
 
-# требование FBV (Функции)
 
 @api_view(['GET', 'POST'])
 @permission_classes([AllowAny])
@@ -36,23 +35,23 @@ def submit_contact_form(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# требование CBV (Классы) + Полный CRUD + request.user
+
 
 class DeckListCreateAPIView(APIView):
-    # Требуем, чтобы пользователь был залогинен
+    
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        # Чтение (Read): Пользователь видит только свои колоды
+        
         decks = Deck.objects.filter(author=request.user)
         serializer = DeckSerializer(decks, many=True)
         return Response(serializer.data)
 
     def post(self, request):
-        # Создание (Create)
+        
         serializer = DeckSerializer(data=request.data)
         if serializer.is_valid():
-            # КРИТИЧЕСКОЕ ТРЕБОВАНИЕ: Привязка к request.user
+            # Привязка к request.user
             serializer.save(author=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -64,13 +63,13 @@ class DeckDetailAPIView(APIView):
         return get_object_or_404(Deck, pk=pk, author=user)
 
     def get(self, request, pk):
-        # Чтение одной конкретной колоды (Read)
+        
         deck = self.get_object(pk, request.user)
         serializer = DeckSerializer(deck)
         return Response(serializer.data)
 
     def put(self, request, pk):
-        # Обновление (Update)
+        
         deck = self.get_object(pk, request.user)
         serializer = DeckSerializer(deck, data=request.data)
         if serializer.is_valid():
@@ -79,7 +78,7 @@ class DeckDetailAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
-        # Удаление (Delete)
+        
         deck = self.get_object(pk, request.user)
         deck.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
@@ -90,9 +89,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import UserRegistrationForm, UserLoginForm, DeckForm
 
-# ==========================================
-# FRONTEND VIEWS (Отображение в браузере)
-# ==========================================
+
 
 def register_view(request):
     if request.method == 'POST':
@@ -101,11 +98,11 @@ def register_view(request):
             user = form.save(commit=False)
             user.set_password(form.cleaned_data['password'])
             user.save()
-            # Требование: Handle errors gracefully (Успешное сообщение)
+            
             messages.success(request, 'Registration successful! Please log in.')
             return redirect('login')
         else:
-            # Требование: Handle errors gracefully (Сообщение об ошибке)
+            
             messages.error(request, 'Please correct the errors below.')
     else:
         form = UserRegistrationForm()
@@ -134,7 +131,7 @@ def logout_view(request):
     return redirect('home')
 
 def home_view(request):
-    # Выводим все колоды на главной странице
+    
     decks = Deck.objects.all().order_by('-created_at')
     return render(request, 'flashcards/home.html', {'decks': decks})
 
@@ -154,7 +151,7 @@ def create_deck_view(request):
 
 @login_required(login_url='login')
 def add_card_view(request, deck_id):
-    # Находим колоду, в которую хотим добавить карточку
+    
     from django.shortcuts import get_object_or_404
     deck = get_object_or_404(Deck, id=deck_id)
 
@@ -162,7 +159,7 @@ def add_card_view(request, deck_id):
         form = CardForm(request.POST)
         if form.is_valid():
             card = form.save(commit=False)
-            card.deck = deck # Привязываем карточку к этой колоде
+            card.deck = deck 
             card.save()
             messages.success(request, f'Card successfully added to "{deck.title}"!')
             return redirect('home')
@@ -173,11 +170,10 @@ def add_card_view(request, deck_id):
 
 def view_deck_cards(request, deck_id):
     from django.shortcuts import get_object_or_404
-    # Находим нужную колоду
+    
     deck = get_object_or_404(Deck, id=deck_id)
 
-    # Достаем все карточки, связанные с этой колодой 
-    # (мы использовали related_name='cards' в моделях)
+    
     cards = deck.cards.all().order_by('-created_at')
 
     return render(request, 'flashcards/deck_detail.html', {'deck': deck, 'cards': cards})

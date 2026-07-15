@@ -11,18 +11,18 @@
 </div>
 
 <div class="row">
-    <!-- Выводим все карточки через цикл -->
+
     {% for card in cards %}
         <div class="col-md-6 mb-4">
             <div class="card shadow-sm h-100 border-primary">
                 <div class="card-body text-center">
-                    <!-- Оригинальное слово -->
+
                     <h3 class="card-title text-primary mb-3">{{ card.original_word }}</h3>
                     <hr>
-                    <!-- Перевод -->
+                    
                     <h4 class="card-text text-success mt-3">{{ card.translation }}</h4>
                     
-                    <!-- Если есть пример предложения, показываем -->
+                    
                     {% if card.example_sentence %}
                         <p class="text-muted mt-3 font-italic">"{{ card.example_sentence }}"</p>
                     {% endif %}

@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import Language, Deck, Card
 
-# требование ModelSerializer 
+
 
 class LanguageSerializer(serializers.ModelSerializer):
     class Meta:
@@ -9,7 +9,7 @@ class LanguageSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class DeckSerializer(serializers.ModelSerializer):
-    # Делаем автора ReadOnly, чтобы он проставлялся автоматически
+    
     author = serializers.ReadOnlyField(source='author.username')
 
     class Meta:
@@ -17,8 +17,7 @@ class DeckSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'description', 'language', 'author', 'created_at']
 
 
-# === Выполняем требование: >=2 обычных Serializer ===
-# (Они нужны просто для демонстрации, что мы умеем валидировать данные без привязки к базе)
+
 
 class ContactFormSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=100)

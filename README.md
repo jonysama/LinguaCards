@@ -26,3 +26,14 @@ The system is built around distinct user interactions to ensure an effective lea
 * Zhabykbay Batyrkhan
 * Zhanibek Alimkulov
 * Shamil Bakdaulet
+
+## Team Contribution
+
+* **Zhanibek Alimkulov**
+Responsible for explaining project architecture, frontend templates, database structure, Django models, and relationships between User, Deck, and Card models.
+
+* **Zhabykbay Batyrkhan**
+Responsible for API explanation, token authentication, Postman collection, and endpoint testing.
+
+* **Shamil Bakdaulet**
+Responsible for project concept, GitHub setup, live demo, and user flow demonstration.
